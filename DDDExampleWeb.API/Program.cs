@@ -1,4 +1,11 @@
 
+using DDDExampleWeb.Application.Interfaces;
+using DDDExampleWeb.Application.Services;
+using DDDExampleWeb.Domain.Interfaces;
+using DDDExampleWeb.Infrastructure.Datas;
+using DDDExampleWeb.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 namespace DDDExampleWeb.API
 {
     public class Program
@@ -13,6 +20,12 @@ namespace DDDExampleWeb.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<ExampleDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
+
+            builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
+            builder.Services.AddScoped<IExampleService, ExampleService>();
 
             var app = builder.Build();
 
